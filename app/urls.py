@@ -1,6 +1,8 @@
 from django.conf.urls import url
 from django.urls import path, include
+from django.views.generic import TemplateView
 from rest_framework import routers
+from rest_framework_jwt.views import obtain_jwt_token, refresh_jwt_token
 
 from .views import *
 
@@ -18,6 +20,10 @@ router.register(r'albumreviews', AlbumReviewViewSet, base_name='albumreview')
 urlpatterns = [
     url(r'^$', APIRoot.as_view(), name='root'),
     path('api-auth/', include('rest_framework.urls')),
+    path('cliente/', TemplateView.as_view(template_name='index.html')),
+    # JWT auth
+    url(r'^auth/obtain_token/', obtain_jwt_token),
+    url(r'^auth/refresh_token/', refresh_jwt_token),
 ]
 
 urlpatterns += router.urls
